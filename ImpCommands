@@ -2,3 +2,34 @@ export ORACLE_SID=orcl
 export ORACLE_HOME=/u01/app/oracle/product/11.2.0
 export PATH=$ORACLE_HOME/bin:$PATH:.
 export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+
+
+
+
+gedit a.pc:
+
+#include <stdio.h>
+#include <string.h>
+#include <sqlda.h>
+#include <sqlcpr.h>
+EXEC SQL BEGIN DECLARE SECTION;
+VARCHAR uid[30];
+VARCHAR pwd[30];
+EXEC SQL END DECLARE SECTION;
+EXEC SQL INCLUDE SQLCA.H;
+void main()
+{
+   strcpy(uid.arr,"hello");
+   uid.len =strlen(uid.arr);
+   strcpy(pwd.arr,"hello");
+   pwd.len = strlen(pwd.arr);
+   EXEC SQL CONNECT :uid IDENTIFIED BY :pwd;
+   printf("Connected to Oracle12c using hello/hello\n");
+   EXEC SQL COMMIT WORK RELEASE;
+   return;
+}  /* end of main */
+
+
+
+
+
