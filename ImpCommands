@@ -42,5 +42,9 @@ gcc -o a a.c -m64 -I $ORACLE_HOME/precomp/public -L $ORACLE_HOME/lib  -lclntsh
 ./a
 
 
+proc a.pc CODE=CPP define=__x86_64__ include=/usr/lib/gcc/x86_64-redhat-linux/4.4.4/include include=/usr/include
+gcc -o a a.cpp -m64 -I $ORACLE_HOME/precomp/public -L $ORACLE_HOME/lib  -lclntsh
+
+
 
 
