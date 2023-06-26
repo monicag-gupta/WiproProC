@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+#include <oraca.h>
+#include <sqlda.h>
+/* Declare error handling function. */
+void sql_error();
+int main(int argc, char** argv){
+char user[]="hello";
+char pwd[]="hello";
+char msg_buf[51]="";
+/* Register sql_error() as the error handler. */
+EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
+EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
+EXEC SQL
+SELECT msg INTO :msg_buf FROM hello_world WHERE rownum <= 1;
+printf("%s\n", msg_buf);
+
+return(0);
+}
+void sql_error(char *msg) {
+char err_msg[128];
+int buf_len, msg_len;
+EXEC SQL WHENEVER SQLERROR CONTINUE;
+printf("%s\n", msg);
+buf_len = sizeof (err_msg);
+sqlglm(err_msg, &buf_len, &msg_len);
+if (msg_len > buf_len)
+msg_len = buf_len;
+printf("%.*s\n", msg_len, err_msg);
+EXEC SQL ROLLBACK RELEASE;
+exit(1);
+}
