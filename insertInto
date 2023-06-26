@@ -8,13 +8,15 @@ void sql_error();
 int main(int argc, char** argv){
 char user[]="hello";
 char pwd[]="hello";
+char msgs[50];
+strcpy(msgs,"Hello world!");
 char msg_buf[51]="";
 /* Register sql_error() as the error handler. */
 EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
 EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
 EXEC SQL
 INSERT INTO hello_world
-VALUES ('Hello world!');
+VALUES (:msgs);
 EXEC SQL COMMIT;
 return(0);
 }
