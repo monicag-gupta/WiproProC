@@ -1,3 +1,52 @@
 create table emp123(id int, name varchar(50));
 
 
+
+
+#include <stdio.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+#include <oraca.h>
+#include <sqlda.h>
+/* Declare error handling function. */
+void sql_error();
+typedef struct {
+	int id;
+	char nam[50];
+} rec_emp123;
+int main(int argc, char** argv){
+	char user[]="hello";
+	char pwd[]="hello";
+	rec_emp123 rec;
+	rec_emp123 rec2;
+	rec.id=101;
+	strcpy(rec.nam, "Jay Roy"); 
+	/* Register sql_error() as the error handler. */
+	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
+	EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
+
+	EXEC SQL
+		INSERT INTO emp123 VALUES (:rec);
+	EXEC SQL COMMIT;
+
+	EXEC SQL
+		SELECT * INTO :rec2 FROM emp123 WHERE rownum <= 1;
+	printf("%d : %s\n", rec2.id, rec2.nam);  
+
+	return(0);
+}
+void sql_error(char *msg) {
+	char err_msg[128];
+	int buf_len, msg_len;
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
+	printf("%s\n", msg);
+	buf_len = sizeof (err_msg);
+	sqlglm(err_msg, &buf_len, &msg_len);
+	if (msg_len > buf_len)
+		msg_len = buf_len;
+	printf("%.*s\n", msg_len, err_msg);
+	EXEC SQL ROLLBACK RELEASE;
+	exit(1);
+}
+
+
