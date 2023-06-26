@@ -1,0 +1,3 @@
+create table emp123(id int, name varchar(50));
+
+
