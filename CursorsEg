@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+#include <oraca.h>
+#include <sqlda.h>
+void sql_error();
+int main(int argc, char** argv){
+	char user[]="hello", pwd[]="hello", msg_buf[51]="";
+	int count=0, i=1;
+	printf("The hello_world table: (msg)\n");
+	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
+	EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
+	/*EXEC SQL SELECT COUNT(*) INTO :count FROM hello_world; */
+	EXEC SQL DECLARE MSGCURSOR CURSOR FOR Select msg FROM hello_world where msg is not null;
+	EXEC SQL OPEN MSGCURSOR;
+	EXEC SQL WHENEVER NOT FOUND GOTO close_cur;
+	while(1){
+   		EXEC SQL FETCH MSGCURSOR INTO :msg_buf;
+		  printf("\nRecord %d: %s \n", i++, msg_buf); 
+		
+	}
+close_cur:
+	EXEC SQL CLOSE MSGCURSOR;
+	printf("\nEnd of Table!\n\n");
+	return(0);
+}
+void sql_error(char *msg) {
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
+	printf("%s\n", msg);
+	EXEC SQL ROLLBACK RELEASE;
+	exit(1);
+}
+
