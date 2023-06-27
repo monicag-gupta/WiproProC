@@ -31,3 +31,76 @@ void sql_error(char *msg) {
 	exit(1);
 }
 
+
+
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+/* declare host variables */
+char userid[12]="hello/hello";
+char msg_buf[15];
+void sql_error();
+/* include the SQL Communications Area */
+#include<sqlca.h>
+int main()
+{
+/* handle errors */
+EXEC SQL WHENEVER SQLERROR do sql_error("Oracle error");
+/* connect to Oracle */
+EXEC SQL CONNECT :userid;
+printf("Connected.\n");
+/* declare a scrollable cursor */
+EXEC SQL DECLARE msg_cursor SCROLL CURSOR FOR
+SELECT msg FROM hello_world where msg is not null;;
+/* open the cursor and identify the active set */
+EXEC SQL OPEN msg_cursor;
+/* Fetch the last row */
+/*EXEC SQL FETCH LAST msg_cursor INTO :msg_buf;
+printf("Last msg: %s",msg_buf); */
+
+/* Fetch row number 3 */
+EXEC SQL FETCH ABSOLUTE 3 msg_cursor INTO :msg_buf;
+printf("3rd msg: %s",msg_buf); 
+/* Fetch row number 2 */
+/* EXEC SQL FETCH RELATIVE 2 msg_cursor INTO :msg_buf;
+printf("2nd msg from current: %s",msg_buf); */
+/* Fetch row number second last */
+/* EXEC SQl FETCH RELATIVE -2 msg_cursor INTO :msg_buf;
+printf("2nd last msg from current: %s",msg_buf); */
+/* Fetch the first row */
+/* EXEC SQL FETCH FIRST msg_cursor INTO :msg_buf;
+printf("First msg: %s",msg_buf); */
+/* Fetch row number 2*/
+/* EXEC SQL FETCH msg_cursor INTO :msg_buf;
+printf("2nd msg: %s",msg_buf); */
+/* Fetch row number 3 */
+/* EXEC SQL FETCH NEXT msg_cursor INTO :msg_buf;
+printf("3rd msg: %s",msg_buf); */
+/* Fetch row number 3 */
+/* EXEC SQL FETCH CURRENT msg_cursor INTO :msg_buf;
+printf("3rd msg: %s",msg_buf); */
+/* Fetch row number 2 */
+/* EXEC SQL FETCH PRIOR msg_cursor INTO :msg_buf;
+printf("2nd msg: %s",msg_buf); */
+printf("\n");
+return 0;
+}
+void
+sql_error(msg)
+char *msg;
+{
+char buf[500];
+int buflen , msglen;
+EXEC SQL WHENEVER SQLERROR CONTINUE;
+buflen = sizeof (buf);
+sqlglm(buf, &buflen, &msglen);
+printf("%s\n",msg);
+printf("%*.s\n",msglen,buf);
+EXEC SQL ROLLBACK RELEASE;
+exit(1);
+}
+
