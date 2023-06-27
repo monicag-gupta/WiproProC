@@ -59,33 +59,33 @@ SELECT msg FROM hello_world where msg is not null;;
 /* open the cursor and identify the active set */
 EXEC SQL OPEN msg_cursor;
 /* Fetch the last row */
-/*EXEC SQL FETCH LAST msg_cursor INTO :msg_buf;
-printf("Last msg: %s",msg_buf); */
+EXEC SQL FETCH LAST msg_cursor INTO :msg_buf;
+printf("Last msg: %s\n",msg_buf); 
 
 /* Fetch row number 3 */
-EXEC SQL FETCH ABSOLUTE 3 msg_cursor INTO :msg_buf;
-printf("3rd msg: %s",msg_buf); 
+/*cEXEC SQL FETCH ABSOLUTE 3 msg_cursor INTO :msg_buf;
+printf("3rd msg: %s\n",msg_buf); */
 /* Fetch row number 2 */
 /* EXEC SQL FETCH RELATIVE 2 msg_cursor INTO :msg_buf;
-printf("2nd msg from current: %s",msg_buf); */
+printf("2nd msg from current: %s\n",msg_buf); */
 /* Fetch row number second last */
 /* EXEC SQl FETCH RELATIVE -2 msg_cursor INTO :msg_buf;
-printf("2nd last msg from current: %s",msg_buf); */
+printf("2nd last msg from current: %s\n",msg_buf); */
 /* Fetch the first row */
-/* EXEC SQL FETCH FIRST msg_cursor INTO :msg_buf;
-printf("First msg: %s",msg_buf); */
+ EXEC SQL FETCH FIRST msg_cursor INTO :msg_buf;
+printf("First msg: %s\n",msg_buf);
 /* Fetch row number 2*/
 /* EXEC SQL FETCH msg_cursor INTO :msg_buf;
-printf("2nd msg: %s",msg_buf); */
+printf("2nd msg: %s\n",msg_buf); */
 /* Fetch row number 3 */
 /* EXEC SQL FETCH NEXT msg_cursor INTO :msg_buf;
-printf("3rd msg: %s",msg_buf); */
+printf("3rd msg: %s\n",msg_buf); */
 /* Fetch row number 3 */
 /* EXEC SQL FETCH CURRENT msg_cursor INTO :msg_buf;
-printf("3rd msg: %s",msg_buf); */
+printf("3rd msg: %s\n",msg_buf); */
 /* Fetch row number 2 */
 /* EXEC SQL FETCH PRIOR msg_cursor INTO :msg_buf;
-printf("2nd msg: %s",msg_buf); */
+printf("2nd msg: %s\n",msg_buf); */
 printf("\n");
 return 0;
 }
@@ -103,4 +103,3 @@ printf("%*.s\n",msglen,buf);
 EXEC SQL ROLLBACK RELEASE;
 exit(1);
 }
-
