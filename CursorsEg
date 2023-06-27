@@ -63,7 +63,7 @@ EXEC SQL FETCH LAST msg_cursor INTO :msg_buf;
 printf("Last msg: %s\n",msg_buf); 
 
 /* Fetch row number 3 */
-/*cEXEC SQL FETCH ABSOLUTE 3 msg_cursor INTO :msg_buf;
+/* EXEC SQL FETCH ABSOLUTE 3 msg_cursor INTO :msg_buf;
 printf("3rd msg: %s\n",msg_buf); */
 /* Fetch row number 2 */
 /* EXEC SQL FETCH RELATIVE 2 msg_cursor INTO :msg_buf;
