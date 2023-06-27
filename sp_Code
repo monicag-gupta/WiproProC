@@ -17,7 +17,7 @@ SELECT * FROM hello_world;
 
 
 #include <stdio.h>
-#include <stlib.h>
+#include <stdlib.h>
 #include <sqlca.h>
 #include <sqlcpr.h>
 #include <oraca.h>
