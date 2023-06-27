@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+#include <oraca.h>
+#include <sqlda.h>
+void sql_error();
+int main(int argc, char** argv){
+	char user[]="hello", pwd[]="hello", msg_buf[51]="";
+	printf("Enter message to be inserted in the hello_world table:\n");
+	scanf("%[^\n]",msg_buf);
+	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
+	EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
+	EXEC SQL
+		INSERT INTO hello_world VALUES (:msg_buf);
+	EXEC SQL COMMIT;
+	printf("\nThe value %s is inserted\n", msg_buf);
+	return(0);
+}
+void sql_error(char *msg) {
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
+	printf("%s\n", msg);
+	EXEC SQL ROLLBACK RELEASE;
+	exit(1);
+}
+
+
+
+
+#include <stdio.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+#include <oraca.h>
+#include <sqlda.h>
+void sql_error();
+int main(int argc, char** argv){
+	char user[]="hello", pwd[]="hello", msg_buf[51]="";
+	int count=0, i=1;
+	printf("The hello_world table: (msg)\n");
+	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
+	EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
+	EXEC SQL SELECT COUNT(msg) INTO :count FROM hello_world;
+	EXEC SQL DECLARE MSGCURSOR CURSOR FOR Select msg FROM hello_world where msg is not null;
+	EXEC SQL OPEN MSGCURSOR;
+	do{
+   		EXEC SQL FETCH MSGCURSOR INTO :msg_buf;
+		printf("\nRecord %d: %s \n", i++, msg_buf); 
+	}while(i<=count);
+	EXEC SQL CLOSE MSGCURSOR;
+	printf("\nEnd of Table!\n\n");
+	return(0);
+}
+void sql_error(char *msg) {
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
+	printf("%s\n", msg);
+	EXEC SQL ROLLBACK RELEASE;
+	exit(1);
+}
+
+
+
+
+#include <stdio.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+#include <oraca.h>
+void sql_error();
+int main(int argc, char** argv){
+	char user[]="hello", pwd[]="hello", msg_buf[51]="", msg_buf2[51]="";
+	printf("Enter Original message to be searched for updation in the hello_world table:\n");
+	gets(msg_buf);
+	printf("Enter the changed message to be updated in the hello_world table:\n");
+	gets(msg_buf2);
+	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
+	EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
+	EXEC SQL
+		 UPDATE hello_world SET msg = :msg_buf2 WHERE msg = :msg_buf;
+	EXEC SQL COMMIT;
+	printf("\nThe value %s is updated to %s\n", msg_buf, msg_buf2);
+	return(0);
+} void sql_error(char *msg) {
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
+	printf("%s\n", msg);
+	EXEC SQL ROLLBACK RELEASE;
+	exit(1);
+}
+
+
+
+
+
+#include <stdio.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+#include <oraca.h>
+void sql_error();
+int main(int argc, char** argv){
+	char user[]="hello", pwd[]="hello", msg_buf[51]="";
+	printf("Enter message to be deleted in the hello_world table:\n");
+	gets(msg_buf);
+	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
+	EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
+	EXEC SQL
+		 DELETE hello_world WHERE msg = :msg_buf;
+	EXEC SQL COMMIT;
+	printf("\nThe value %s is deleted\n", msg_buf);
+	return(0);
+}
+void sql_error(char *msg) {
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
+	printf("%s\n", msg);
+	EXEC SQL ROLLBACK RELEASE;
+	exit(1);
+}
