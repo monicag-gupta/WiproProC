@@ -48,3 +48,8 @@ exit(1);
 
 
 
+proc a.pc define=__x86_64__ include=/usr/lib/gcc/x86_64-redhat-linux/4.4.4/include include=/usr/include SQLCHECK=SEMANTICS USERID=hello/hello
+
+
+
+
