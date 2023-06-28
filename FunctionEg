@@ -1,0 +1,16 @@
+CREATE OR REPLACE FUNCTION RevHello(inputString VARCHAR2)
+   RETURN VARCHAR2 
+   IS
+   reversedString VARCHAR2(50); 
+   BEGIN 
+      SELECT REVERSE(inputString) INTO reversedString FROM DUAL;
+      RETURN (reversedString);
+      
+    END RevHello;
+/
+
+
+
+
+
+
