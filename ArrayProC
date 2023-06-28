@@ -106,3 +106,52 @@ void sql_error(char *msg) {
 
 
 
+
+
+#include <stdio.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+#include <stdlib.h>
+#include <oraca.h>
+#include <sqlda.h>
+void sql_error();
+EXEC SQL BEGIN DECLARE SECTION; 
+int limit; /* for use in FETCH FOR clause */
+EXEC SQL END DECLARE SECTION; 
+int main(int argc, char** argv){
+	char user[]="hello", pwd[]="hello";
+	int i;
+	short indicatorVar[15];
+	char msg_buf[15][20]; 
+	for(i=0;i<15;i++){
+		indicatorVar[i]=-1;
+	}
+	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
+	EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
+	/* Find number of rows in table. */
+ 	EXEC SQL SELECT COUNT(msg) INTO :limit FROM hello_world;
+	EXEC SQL
+		SELECT MSG INTO :msg_buf indicator :indicatorVar from hello_world;
+	/*EXEC SQL
+		SELECT MSG INTO :msg_buf from hello_world WHERE MSG IS NOT NULL;  
+	*/
+	printf("\nThe msg values are :\n");
+	for(i=0;i<15 && i<limit;i++){
+		printf("Message %d : %s\n",(i+1),msg_buf[i]);
+	}
+	return(0);
+}
+void sql_error(char *msg) {
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
+	printf("%s\n", msg);
+	EXEC SQL ROLLBACK RELEASE;
+	exit(1);
+}
+
+
+
+
+
+
+
+
