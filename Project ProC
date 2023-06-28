@@ -1,0 +1,7 @@
+Use a ProC program to prepare the scenario:
+Use GCC compiler to compile C Program and Oracle to write the procedure:
+WAP in ProC for Employee Management System with following architecture:
+The C file is used as a front end tool
+Use Oracle as the database file storage tool.
+Use only Basic information for Employee like: ECode, EName, ESal, EProject.
+WA Procedure in ProC to work with transactions, where the same Employee Management System is managed by master and transaction files. EProject gets updated regularly, ESal gets updated half-yearly. We need to reduce the Reader – Writer Problem. So Salary Slip/Project Information can be updated only after Esal, EProject gets updated.
