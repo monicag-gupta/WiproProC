@@ -84,7 +84,7 @@ int main(int argc, char** argv){
 	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
 	EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
 	/* Find number of rows in table. */
- 	EXEC SQL SELECT COUNT(*) INTO :limit FROM hello_world;
+ 	EXEC SQL SELECT COUNT(msg) INTO :limit FROM hello_world;
 	EXEC SQL
 		SELECT MSG INTO :msg_buf indicator :indicatorVar from hello_world;
 	/*EXEC SQL
