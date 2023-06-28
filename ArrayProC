@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <sqlca.h>
+#include <sqlcpr.h>
+#include <oraca.h>
+#include <sqlda.h>
+void sql_error();
+int main(int argc, char** argv){
+	char user[]="hello", pwd[]="hello";
+	char msg_buf[5][10]={"First","ProC","Oracle"}; /*Array of 5 Strings with 10 chars each*/
+	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error\n");
+	EXEC SQL CONNECT :user IDENTIFIED BY :pwd;
+	EXEC SQL
+		INSERT INTO hello_world VALUES (:msg_buf);
+	EXEC SQL COMMIT;
+	printf("\nThe values are inserted\n");
+	return(0);
+}
+void sql_error(char *msg) {
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
+	printf("%s\n", msg);
+	EXEC SQL ROLLBACK RELEASE;
+	exit(1);
+}
+
