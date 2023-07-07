@@ -5,7 +5,7 @@ gcc -o hellomake hellomake.c hellofunc.c -I.
 
 Makefile
 hellomake: hellomake.c hellofunc.c 
-       gcc -o hellomake hellomake.c hellofunc.c  hellomake.h -I.
+	gcc -o hellomake hellomake.c hellofunc.c  hellomake.h -I.
 
 
 
