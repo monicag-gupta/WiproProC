@@ -17,3 +17,8 @@ int main() {
 
 
 
+
+g++ mth.cpp  -lpthread 
+./a.out
+
+
