@@ -22,3 +22,32 @@ g++ mth.cpp  -lpthread
 ./a.out
 
 
+
+
+
+#include <iostream>
+#include <thread>
+static const int num_of_threads = 10;
+//This is the function that will run in parallel
+// It will be passed to the thread
+void thread_method(int thread_id) {
+	std::cout << "Function running in thread " << thread_id << std::endl;
+}
+int main() {
+	std::thread threads[num_of_threads];
+	//This statement will launch multiple threads in loop
+	for (int i = 0; i < num_of_threads; ++i) {
+		threads[i] = std::thread(thread_method, i);
+	}
+	std::cout << "The main function execution\n";
+	//This is how we join the new thread with main
+	for (int i = 0; i < num_of_threads; ++i) {
+		threads[i].join();
+	}
+	//getchar();
+	return 0;
+}
+
+
+
+
